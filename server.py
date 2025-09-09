@@ -13,19 +13,37 @@ print("This is your ip: ", socket_ip)
 
 
 name = input("Enter your name:")
-new_socket.listen(1)
 
-connection, add = new_socket.accept() #connection is connected to the socket and add is assigned to the IP address of the client
-print("Connection from: " , add[0])
-print("Connection established with: ", add[0])
 
-client = (connection.recv(1024)).decode()
-print(client + " connected.")
-connection.send(name.encode())
 
-while True:
-    message = input("Enter message: ") #user sends message then waits for returning message
-    connection.send(message.encode())
-    message = connection.recv(1024)
-    message = message.decode()
-    print(client, ":", message) 
+
+try:
+    
+    new_socket.listen(2)
+    connection, addr = new_socket.accept()
+    connection.send(name.encode())
+    client = (connection.recv(1024)).decode()
+    
+    print(client + " connected.")
+   
+
+
+    while True:
+        receiving_message = connection.recv(1024).decode()
+        
+        
+        print(client, time.strftime("%d %b %Y %H:%M:%S ", time.localtime()),":", receiving_message) 
+
+        message =  input("Enter message: ") #user sends message then waits for returning message
+        if message.lower() == "/quit":
+            break
+        
+        connection.send(name.encode())
+        print(time.strftime("%d %b %Y %H:%M:%S", time.localtime()))
+        connection.send(message.encode())
+except Exception as e:
+    print("error ", e)
+
+finally:
+    connection.close()
+    new_socket.close()
