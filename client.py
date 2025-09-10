@@ -28,7 +28,7 @@ try:
         
         if server_message.lower == "/quit":
             break
-        print(server_name, ":", server_message)
+        print(server_name, time.strftime("%d %b %Y %H:%M:%S ", time.localtime()),":", server_message)
 
 except Exception as e:
     print("error occurred: " , e)

@@ -14,16 +14,11 @@ print("This is your ip: ", socket_ip)
 
 name = input("Enter your name:")
 
-
-
-
 try:
     
     new_socket.listen(2)
     connection, addr = new_socket.accept()
     connection.send(name.encode())
-    client = (connection.recv(1024)).decode()
-    
     print(client + " connected.")
    
 
@@ -32,7 +27,7 @@ try:
         receiving_message = connection.recv(1024).decode()
         
         
-        print(client, time.strftime("%d %b %Y %H:%M:%S ", time.localtime()),":", receiving_message) 
+        
 
         message =  input("Enter message: ") #user sends message then waits for returning message
         if message.lower() == "/quit":
