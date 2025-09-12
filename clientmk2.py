@@ -5,30 +5,38 @@ host = "10.5.0.2"
 port = 8080
 
 
-username = input("Choose username: ")
 
-client_socket = socket.socket()
+
 
 def receive(socket):
-    while True:
-        try:
-            message = socket.recv(1024)
-            if not message:
-                break
-            print(message.decode())
-        except:
-            break
+    try:
+        while True:
+                message = socket.recv(1024)
+                if not message:
+                    break
+                print(message.decode().strip())
+    except Exception as e:
+            print("receiver excepion", e)
 
 
-client_socket.connect((host, port))
-client_socket.sendall(username.encode())
-threading.Thread(target=receive, args=(client_socket,), daemon=True).start()
 
-while True:
-    msg = input("Enter message: ")
-    if msg.lower == "/quit":
-        break
+def main():
+    client_socket = socket.socket()
+    client_socket.connect((host, port))
+    username = input("Choose username: ")
+    client_socket.sendall(username.encode())
+
+    threading.Thread(target=receive, args=(client_socket,), daemon=True).start()
+    try:
+        while True:
+            msg = input("Enter message: \n"  )
+            client_socket.sendall(msg.encode())
+    except KeyboardInterrupt:
+         print("stopping")
+    finally:
+        client_socket.close()
+
     
-    client_socket.sendall(msg.encode())
 
-client_socket.close()
+if __name__ == "__main__":
+     main()

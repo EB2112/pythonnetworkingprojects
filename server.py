@@ -29,7 +29,7 @@ try:
         
         
 
-        message =  input("Enter message: ") #user sends message then waits for returning message
+        message =  input("Enter message: ")  #user sends message then waits for returning message
         if message.lower() == "/quit":
             break
         
